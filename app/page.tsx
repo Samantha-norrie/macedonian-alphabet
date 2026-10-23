@@ -1,9 +1,9 @@
-import Flashcard from "./Flashcard";
+import Home from "./Home";
 
-export default function Home() {
+export default function Page() {
   return (
     <main className="screen">
-      <Flashcard />
+      <Home />
     </main>
   );
 }
