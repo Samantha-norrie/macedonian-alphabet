@@ -29,3 +29,17 @@ export function randomSyllable(fromTop: number = syllables.length): Syllable {
   const pool = Math.min(fromTop, syllables.length);
   return syllables[Math.floor(Math.random() * pool)];
 }
+
+/**
+ * Build a shuffled set of Latin answer options for `card`: the correct Latin
+ * plus `count - 1` distinct wrong Latin syllables. Exactly one option matches.
+ */
+export function latinOptions(card: Syllable, count: number = 4): string[] {
+  const options = new Set<string>([card.latin]);
+  // Draw distractors with distinct Latin spellings until we have enough.
+  let guard = 0;
+  while (options.size < count && guard++ < 1000) {
+    options.add(randomSyllable().latin);
+  }
+  return [...options].sort(() => Math.random() - 0.5);
+}
