@@ -10,8 +10,24 @@ const BACK_MS = 3000;
 
 type Result = "correct" | "wrong";
 
-export default function Flashcard() {
-  const [card, setCard] = useState<Syllable | null>(null);
+/** A card is any Cyrillic/Latin pair (syllable or single character). */
+type Card = Pick<Syllable, "cyrillic" | "latin"> & {
+  /** Optional override for what TTS speaks; falls back to `cyrillic`. */
+  say?: string;
+};
+
+interface FlashcardProps {
+  /** Draw the next card. Defaults to a random syllable. */
+  draw?: () => Card;
+  /** Build the Latin answer options for a card. Defaults to syllable options. */
+  makeOptions?: (card: Card) => string[];
+}
+
+export default function Flashcard({
+  draw = randomSyllable,
+  makeOptions = latinOptions,
+}: FlashcardProps = {}) {
+  const [card, setCard] = useState<Card | null>(null);
   const [options, setOptions] = useState<string[]>([]);
   const [flipped, setFlipped] = useState(false);
   const [picked, setPicked] = useState<string | null>(null);
@@ -19,26 +35,26 @@ export default function Flashcard() {
 
   // Pick the first card on the client (avoids a server/client random mismatch).
   useEffect(() => {
-    const first = randomSyllable();
+    const first = draw();
     setCard(first);
-    setOptions(latinOptions(first));
-  }, []);
+    setOptions(makeOptions(first));
+  }, [draw, makeOptions]);
 
   // Once flipped, hold the Latin side, then advance to a fresh card.
   useEffect(() => {
     if (!flipped) return;
 
     const nextTimer = setTimeout(() => {
-      const next = randomSyllable();
+      const next = draw();
       setCard(next);
-      setOptions(latinOptions(next));
+      setOptions(makeOptions(next));
       setFlipped(false);
       setPicked(null);
       setResult(null);
     }, BACK_MS);
 
     return () => clearTimeout(nextTimer);
-  }, [flipped]);
+  }, [flipped, draw, makeOptions]);
 
   function choose(latin: string) {
     if (flipped || !card) return; // ignore clicks once answered
@@ -48,8 +64,8 @@ export default function Flashcard() {
     setFlipped(true);
     if (correct) playCorrect();
     else playWrong();
-    // Always pronounce the correct syllable, after the feedback sound lands.
-    speak(card.cyrillic, 450);
+    // Always pronounce the card, after the feedback sound lands.
+    speak(card.say ?? card.cyrillic, 450);
   }
 
   if (!card) return null;
