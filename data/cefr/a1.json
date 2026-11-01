@@ -1,0 +1,55 @@
+{
+  "id": "a1",
+  "name": "A1 — Beginner",
+  "description": "Macedonian CEFR A1: greetings, core vocabulary, basic phrases.",
+  "chapters": [
+    {
+      "id": "a1.ch1",
+      "title": "Getting Started",
+      "description": "First words and the sounds of Macedonian.",
+      "units": [
+        {
+          "id": "a1.ch1.u1",
+          "title": "Greetings",
+          "description": "Say hello, goodbye, yes and no.",
+          "lessons": [
+            {
+              "id": "a1.ch1.u1.l1",
+              "title": "Hello & Goodbye",
+              "questions": [
+                {
+                  "id": "a1.ch1.u1.l1.q1",
+                  "type": "vocab",
+                  "cyrillic": "здраво",
+                  "options": ["hello", "goodbye", "thanks", "please"],
+                  "answer": "hello"
+                },
+                {
+                  "id": "a1.ch1.u1.l1.q2",
+                  "type": "listening",
+                  "audio": "/audio/a1/prijatno.mp3",
+                  "options": ["пријатно", "добро", "фала", "здраво"],
+                  "answer": "пријатно"
+                },
+                {
+                  "id": "a1.ch1.u1.l1.q3",
+                  "type": "translate",
+                  "source": "Goodbye",
+                  "direction": "en-mk",
+                  "accepted": ["догледање", "пријатно"]
+                },
+                {
+                  "id": "a1.ch1.u1.l1.q4",
+                  "type": "fill-blank",
+                  "sentence": "___ , како си?",
+                  "options": ["Здраво", "Фала", "Да", "Не"],
+                  "answer": "Здраво"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
